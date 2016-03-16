@@ -1,0 +1,13 @@
+extends ../node_modules/jade-bootstrap/_bootstrap
+
+head
+  title=title
+  link(rel='stylesheet', href='/stylesheets/style.css')
+block body
+  +navbar("Now thurr users hurr", "dropdown_menu")
+    +nav_item("/") Home
+    +nav_item("/users", "active") Users
+    +nav_item("/list") Stock
+  .container
+    p Welcome to #{title}
+    p NEW THING. THING. YES.

@@ -2,9 +2,16 @@ extends ../node_modules/jade-bootstrap/_bootstrap
 
 head
   title=title
+  link(rel='stylesheet', href='/stylesheets/style.css')
 block body
   +navbar("This is the title of the Navbar", "dropdown_menu")
     +nav_item("/", "active") Home
+    +nav_item("/users") Users
     +nav_item("/list") Stock
   .container
+    +carousel("Dem Hot Cross Buns", [
+      {image:"images/0.jpg", p:"Hot Cross Buns for Franky"},
+      {image:"images/1.jpg", p:"And then some more!"},
+      {image:"images/2.jpg", p:"Even more still!!!"}
+    ])
     p Welcome to #{title}. Fuck it man, let's make this a little different at least...
