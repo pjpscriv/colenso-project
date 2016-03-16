@@ -7,7 +7,6 @@ client.execute("XQUERY declare default element namespace 'http://www.tei-c.org/n
       console.log(result.result);
       console.log("OK  :"+result.ok);
       console.log("Info:"+result.info.trim());
-      
       console.log("And thus it was done.");
     }
   }
