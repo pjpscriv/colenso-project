@@ -12,3 +12,5 @@ client.execute("XQUERY declare default element namespace 'http://www.tei-c.org/n
     }
   }
 );
+
+client.execute("LIST .", function(e, r) { if(!e) console.log(r.result)})
