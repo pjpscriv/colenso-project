@@ -1,6 +1,11 @@
 extends layout
 
-block content
+block body
+  +navbar("Database", "dropdown_menu")
+    +nav_item("/") Home
+    +nav_item("/users") Users
+    +nav_item("/list", "active") Error
+
   h1 You fucked up
   h1= message
   h2= error.status

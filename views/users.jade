@@ -1,13 +1,11 @@
-extends ../node_modules/jade-bootstrap/_bootstrap
+extends layout
 
-head
-  title=title
-  link(rel='stylesheet', href='/stylesheets/style.css')
 block body
-  +navbar("Now thurr users hurr", "dropdown_menu")
+  +navbar("Database", "dropdown_menu")
     +nav_item("/") Home
     +nav_item("/users", "active") Users
-    +nav_item("/list") Stock
+    +nav_item("/list") Error
   .container
+    h1=title
     p Welcome to #{title}
     p NEW THING. THING. YES.

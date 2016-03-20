@@ -1,17 +1,19 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+var express = require('express');           // App framework
+var path = require('path');                 // Node thing for dealing with paths. E.g. adding in all the directories node uses
+var favicon = require('serve-favicon');     // For fav-icon
+var logger = require('morgan');             // A logging software. Useful for when dev-ing (if I knew how to use it)
+var cookieParser = require('cookie-parser');// For dealing with cookies
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 // Set up Connection to Server
+/*
 var basex = require('basex');
 var client = new basex.Session("127.0.0.1", 1984, "admin", "admin");
 client.execute("OPEN Colenso");
+*/
 
 var app = express();
 

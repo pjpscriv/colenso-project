@@ -1,17 +1,26 @@
-extends ../node_modules/jade-bootstrap/_bootstrap
+//- title
+  - type
+  - reqthing
+  - info
 
-head
-  title=title
-  link(rel='stylesheet', href='/stylesheets/style.css')
+extends layout
+
 block body
-  +navbar("This is the title of the Navbar", "dropdown_menu")
+  +navbar("Database", "dropdown_menu")
     +nav_item("/", "active") Home
     +nav_item("/users") Users
-    +nav_item("/list") Stock
+    +nav_item("/list") Error
+
+  h1=title
   .container
+    pre
+      h3 Content
+        p Type: #{type} 
+          | Req : #{reqthing}
+          | #{info}
     +carousel("Dem Hot Cross Buns", [
-      {image:"images/0.jpg", p:"Hot Cross Buns for Franky"},
-      {image:"images/1.jpg", p:"And then some more!"},
-      {image:"images/2.jpg", p:"Even more still!!!"}
+      {image:"images/0.jpg"},
+      {image:"images/1.jpg"},
+      {image:"images/2.jpg"}
     ])
     p Welcome to #{title}. Fuck it man, let's make this a little different at least...
