@@ -1,35 +1,38 @@
-var found = new Map();
-var res_arr = [];
-
 client.execute("LIST Colenso",
   function(error, result) {
 
+    //  Declare new variables
+    var folders = new Map();
+    var array = [];
+    var folder_set = [];
+
     if(error) {
       console.error(error);
-    
     } else {
-      found = new Map();
-      res_arr = result.result.split("\n");
 
+      array = result.result.split("\n");
+
+      // Add directories to Map
+      for (var i = 2; i < array.length-3; i++) {
+        var item = array[i];
+        var slash_index = item.search("/");
+        var name = item.slice(0,slash_index);
+
+        // Adding to Map done here
+        if (folders.has(name)) {
+          folders.set(name, folders.get(name) + 1);
+        } else {
+          folders.set(name, 1);
+        }
+      }
+
+      /*// Print out the Counts
+      for (var key of folders.keys()) {
+        console.log(key+" : "+folders.get(key));
+        folder_set.push(key);
+      }*/
     }
+  console.log(folder_set);
+  return folder_set;
   }
 );
-
-for (var i = 0; i < res_arr.length; i++) {
-  var item = res_arr[i];
-  var slash_index = item.search("/");
-  var name = item.slice(0,slash_index);
-
-  if (found.has(name)) {
-    found.set(name, found.get(name) + 1);
-  } else {
-    found.set(name, 1);
-  }
-}
-
-for (var key of found.keys()) {
-  console.log(key+" : "+found.get(key));
-}
-
-console.log("And thus it was done.");
-console.log("ATIWD");

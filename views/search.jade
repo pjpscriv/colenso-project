@@ -1,6 +1,6 @@
 extends layout
 
-//- VARIABLES: title, query, result
+//- VARIABLES: title, folders, query, result
 
 block body
   +navbar("Database", "dropdown_menu")
@@ -8,10 +8,15 @@ block body
     +nav_item("/search", "active") Search
     +nav_item("/users") Users
 
-  .container
+  
+  .col-sx-2.col-md-2.sidebar
+    ul.nav.nav-sidebar
+      li.active
+        a(href='#') #{folders} 
 
+
+  .container.col-md-10
     h3 XQuery
-
     form(action="/search", method="get")
       .input-group
         input.form-control(type='text', placeholder='XQuery Search...', name="xquery_box")
@@ -19,7 +24,6 @@ block body
           button.btn.btn-default(type='submit') Go!
 
     h3 BaseX
-
     form(action="/search", method="get")
       .input-group
         input.form-control(type='text', placeholder='Basex Command...', name="basex_box")
