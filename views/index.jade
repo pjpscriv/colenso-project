@@ -1,26 +1,24 @@
-//- title
-  - type
-  - reqthing
-  - info
-
 extends layout
+
+//- VARIABLES: title
+
+
+append styles
+  link(rel='stylesheet', href='/stylesheets/index_style.css')
 
 block body
   +navbar("Database", "dropdown_menu")
     +nav_item("/", "active") Home
+    +nav_item("/search") Search
     +nav_item("/users") Users
-    +nav_item("/list") Error
 
-  h1=title
-  .container
-    pre
-      h3 Content
-        p Type: #{type} 
-          | Req : #{reqthing}
-          | #{info}
-    +carousel("Dem Hot Cross Buns", [
-      {image:"images/0.jpg"},
-      {image:"images/1.jpg"},
-      {image:"images/2.jpg"}
-    ])
-    p Welcome to #{title}. Fuck it man, let's make this a little different at least...
+  
+  .jumbotron
+    h1 The Colenso Project
+    p The life and times of William Colenso (1811 - 1899)
+
+
+//-   // HTML WAY TO SEND QUERY
+//-   form(action="/", method="get")
+//-      input(type="text", name="text_box")
+//-      input(type="submit", value="Words")

@@ -1,10 +1,13 @@
 extends layout
 
+//- VARIABLES: title
+
 block body
   +navbar("Database", "dropdown_menu")
     +nav_item("/") Home
+    +nav_item("/search") Search
     +nav_item("/users", "active") Users
-    +nav_item("/list") Error
+    
   .container
     h1=title
     p Welcome to #{title}

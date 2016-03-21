@@ -7,8 +7,10 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var search = require('./routes/search');
 
-// Set up Connection to Server
+// Set up Connection to Server 
+// NOPE WAIT NO THIS IS THE WRONG PLACE TO DO THIS
 /*
 var basex = require('basex');
 var client = new basex.Session("127.0.0.1", 1984, "admin", "admin");
@@ -31,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -41,8 +44,7 @@ app.use(function(req, res, next) {
 
 // error handlers
 
-// development error handler
-// will print stacktrace
+// Development error handler (will print stacktrace)
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
