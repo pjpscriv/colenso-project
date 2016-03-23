@@ -1,0 +1,21 @@
+extends layout
+
+//- VARIABLES: title, folders
+
+block body
+  +navbar("Database", "dropdown_menu")
+    +nav_item("/") Home
+    +nav_item("/browse", "active") Browse
+    +nav_item("/search") Search
+        
+
+  .container-fluid
+    .row
+      .col-sm-3.col-md-2.sidebar
+        ul.nav.nav-sidebar
+          !{folders}
+          li.active
+      .main
+        h1=title
+        p Welcome to #{title}
+        p NEW THING. THING. YES.

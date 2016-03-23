@@ -6,16 +6,8 @@ var cookieParser = require('cookie-parser');// For dealing with cookies
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var browse = require('./routes/browse');
 var search = require('./routes/search');
-
-// Set up Connection to Server 
-// NOPE WAIT NO THIS IS THE WRONG PLACE TO DO THIS
-/*
-var basex = require('basex');
-var client = new basex.Session("127.0.0.1", 1984, "admin", "admin");
-client.execute("OPEN Colenso");
-*/
 
 var app = express();
 
@@ -32,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/browse', browse);
 app.use('/search', search);
 
 // catch 404 and forward to error handler

@@ -5,16 +5,17 @@ extends layout
 block body
   +navbar("Database", "dropdown_menu")
     +nav_item("/") Home
+    +nav_item("/browse") Browse
     +nav_item("/search", "active") Search
-    +nav_item("/users") Users
+
 
   
-  .col-sx-2.col-md-2.sidebar
+  .sidebar-wrapper
     ul.nav.nav-sidebar
-      p !{folders}
+      p #{folders}
 
 
-  .container.col-md-10
+  .container
     h3 XQuery
     form(action="/search", method="get")
       .input-group
@@ -32,7 +33,7 @@ block body
 
     h4 Command
     pre
-      p #{folders}
+      p #{query}
     h4 Result
     pre
       p #{result}
