@@ -7,13 +7,15 @@ var client = new basex.Session("127.0.0.1", 1984, "admin", "admin");
 client.execute("OPEN Colenso");
 
 
-function setFolders(folder_set) {
+function setFolders(folderStr) {
   client.execute("LIST Colenso",
     function(error, result) {
 
       //  Declare new variables
       var folders = new Map();
       var array = [];
+      var folderSet = [];
+      folderStr = "";
 
       if(error) {
         console.error(error);
@@ -32,24 +34,40 @@ function setFolders(folder_set) {
             folders.set(name, folders.get(name) + 1);
           } else {
             folders.set(name, 1);
-            folder_set.push(name);
+            folderSet.push(name);
+            var item = "<li>\n  <a href='#'>"+name+"</a>\n</li>\n";
+            folderStr = folderStr + item;
+            //console.log(folderStr);
           }
+          /*
+          // Create folder string
+          for (var i = 0; i < folderSet.length; i=i) {
+            var name = folderSet[i];
+            //console.log("i: "+i+", name: "+name);
+            var item = "<li>\n  <a href='#'>"+name+"</a>\n</li>\n";
+            //console.log("item: "+item);
+            folderStr = folderStr + item;
+            i++;
+          }
+          */
         }
       }
-    console.log("INT: "+folder_set);
+    console.log("   FOLDERS: Inner");
     }
   );
 }
 
 
-var FOLDERS = [];
+var folderString = "";
+setFolders(folderString);
 
 // Render the Page
 router.get("/",function(req,res){
   
   //var folders = []
-  setFolders(FOLDERS);
-  console.log("Ext: " + FOLDERS);
+  setFolders(folderString);
+  console.log("   FOLDERS: Outer");
+  console.log(":"+folderString+"\nOUTER");
 
   var title = "Search";
   var command = "none"
@@ -68,7 +86,7 @@ router.get("/",function(req,res){
             console.error(error);
           } else {
             res.render('search', {title: "Search",
-                                  folders: FOLDERS, 
+                                  folders: folderString, 
                                   query: command, 
                                   result: result.result});
           }
@@ -82,7 +100,7 @@ router.get("/",function(req,res){
             console.error(error);
           } else {
             res.render('search', {title: "Search",
-                                  folders: FOLDERS, 
+                                  folders: folderString, 
                                   query: command, 
                                   result: result.result});
           }
@@ -91,7 +109,7 @@ router.get("/",function(req,res){
   // No Text Box Query
   } else {
     res.render('search', {title: "extra", 
-                          folders: FOLDERS,
+                          folders: folderString,
                           query: command, 
                           result: result});
   }
