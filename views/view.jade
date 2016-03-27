@@ -1,0 +1,25 @@
+extends layout
+
+//- VARIABLES: title, docTitle, content
+
+block body
+  +navbar("Database", "dropdown_menu")
+    +nav_item("/") Home
+    +nav_item("/browse", "active") Browse
+    +nav_item("/search") Search
+        
+
+  
+
+  .container
+    h3 #{docTitle}
+
+    .nav.nav-pills
+      li.active(role="presentation")
+        a.btn.btn-default(data-target="#Text", data-toggle="collapse") Text
+      li(role="presentation")
+        a.btn.btn-default(data-target="#XML", data-toggle="collapse") XML
+
+    pre 
+      p.collapse.in#Text !{content}
+      p.collapse#XML #{content}

@@ -1,89 +1,110 @@
 var express = require('express');
 var router = express.Router();
 
-// Open Basex Server
+/* Open Basex Server */
 var basex = require('basex');
 var client = new basex.Session("127.0.0.1", 1984, "admin", "admin");
 client.execute("OPEN Colenso");
 
-// Renders page given: folder list
+String.prototype.format = function() {
+    var s = this,
+        i = arguments.length;
+
+    while (i--) {
+        s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+    }
+    return s;
+};
+
+
+/* Renders page given: folder list */
 function renderPage(req, res, folders) {
   res.render('browse', {title: "Browse",
                         folders: folders});
 }
 
-// Returns a Map of directory name: file counts
-function getfolderMap(fileArray, depth) {
 
-
-
-}
-
-// Gets the correct folder view or the given address
+/* Gets the correct folder view or the given address */
 function renderFolders(req, res, dirPath, dirDepth) {
 
   client.execute("LIST Colenso "+dirPath, function(error, result) {
-
-      // PART 1/2 -  SEE WHERE YOU ARE
-
-      var fileArray = [];
-      var folderMap = new Map();
-      var folderArray = [];
-      var folderStr = "";
-
-      console.log("\n");
-
-
+      
       if(error) {
         console.error(error);
       } else {
-        // Add directories to Map and Array
-        fileArray = result.result.split("\n");
 
+        // PART 1/2 -  SEE WHERE YOU ARE
+        console.log("\n");
+        var fileArray = result.result.split("\n");
+        var folderMap = new Map();
+        var folderArray = [];
+        var folderStr = "";
+
+        // Add folders to Map, Array and Str
         for (var i = 2; i < fileArray.length - 3; i++) {
 
-          var item = fileArray[i];
-          var cut_index = item.indexOf("/");
-          var space_index = item.indexOf(" ");
-          var depth = 0;
+          var line = fileArray[i];
+          var name = "";
+          var isFile = false;
+          var slash_index = line.indexOf("/");
+          var space_index = line.indexOf(" ");
 
-          while (depth < dirDepth) {
-            cut_index = item.indexOf("/", (cut_index+1));
-            //console.log("cut "+depth+": "+(cut_index;
-            depth++;
+          for (var depth = 0; depth < dirDepth; depth++) {
+            slash_index = line.indexOf("/", (slash_index+1));
           }
 
-          if (space_index < cut_index) {
-            var nameList = item.split(" ");
-            var name = "/" + nameList[0];
-            console.log("- FILE!, File?");
+          if (space_index < slash_index) {
+            isFile = true;
+            name = "/" + line.slice(0, space_index);
+            //console.log("- FILE!, File?");
           } else {
-            var name = "/"+item.slice(0, cut_index);
-            console.log("- FOLDER: "+cut_index+", "+space_index);
+            name = "/" + line.slice(0, slash_index);
+            //console.log("- FOLDER: "+slash_index+", "+space_index);
           }
 
-          if (folderMap.has(name)) {
-            // Name is already in Map or...
-            folderMap.set(name, folderMap.get(name) + 1);
-          } else {
-            // ...Insert name into Map for first time
-            folderMap.set(name, 1);
-            var tag = '<li>\n  <a href="/browse'+name+'">'+name.slice(1).replace(new RegExp("_", "g"), " ")+"</a>\n</li>\n";
-            folderStr = folderStr + tag;
+
+          if (!folderMap.has(name)) {
+            // Insert into Map
+            if (isFile) {
+              folderMap.set(name, 'file');
+            } else {
+              folderMap.set(name, 1);
+            }
             folderArray.push(name);
-            console.log("Insert in Map  :   "+name);
+          } else {
+            // Increment Count
+            folderMap.set(name, folderMap.get(name) + 1);
           }
         }
       }
 
+      // Create folderStr
+      for (var folder of folderMap.keys()) {
+        var start = "/browse";
+        if (folderMap.get(folder) === 'file') {
+          start = "/view";
+        }
+
+        var tag = '<li>\n  '+
+                    '<a href="{0}{1}">'+
+                      '{2}<span class="badge">{3}</span>'+
+                    '</a>\n'+
+                  '</li>\n';
+
+        tag = tag.format(start,
+                         folder, 
+                         folder.slice(1).replace(new RegExp("_", "g"), " "),
+                         folderMap.get(folder));
+
+        folderStr = folderStr + tag;
+        console.log("Insert in Map  :   "+folder);
+      }
+
+
 
       // PART 2/2 - FIGURE OUT WHERE YOU NEED TO GO
-
-      
       console.log("\nPATH: "+req.path);
       console.log("DIRPATH: "+dirPath+"\n");
-      
-
       var isStart = false;
       var isEqual = false;
       var dirName = "";
@@ -122,7 +143,6 @@ function renderFolders(req, res, dirPath, dirDepth) {
     }
   );
 }
-
 
 
 /* GET users listing. */
