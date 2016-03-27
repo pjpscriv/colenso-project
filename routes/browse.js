@@ -12,44 +12,113 @@ function renderPage(req, res, folders) {
                         folders: folders});
 }
 
+// Returns a Map of directory name: file counts
+function getfolderMap(fileArray, depth) {
 
-function renderFolders(req, res) {
 
-  var command = "Colenso";
 
-  if (req.path in fileArray)
+}
 
-  client.execute("LIST Colenso", function(error, result) {
+// Gets the correct folder view or the given address
+function renderFolders(req, res, dirPath, dirDepth) {
+
+  client.execute("LIST Colenso "+dirPath, function(error, result) {
+
+      // PART 1/2 -  SEE WHERE YOU ARE
 
       var fileArray = [];
-
       var folderMap = new Map();
       var folderArray = [];
       var folderStr = "";
 
+      console.log("\n");
+
+
       if(error) {
         console.error(error);
       } else {
+        // Add directories to Map and Array
+        fileArray = result.result.split("\n");
 
-        // Add directories to Map
-        array = result.result.split("\n");
-        for (var i = 2; i < array.length-3; i++) {
-          var item = array[i];
-          var slash_index = item.search("/");
-          var name = item.slice(0,slash_index);
+        for (var i = 2; i < fileArray.length - 3; i++) {
 
-          // Adding to Map done here
+          var item = fileArray[i];
+          var cut_index = item.indexOf("/");
+          var space_index = item.indexOf(" ");
+          var depth = 0;
+
+          while (depth < dirDepth) {
+            cut_index = item.indexOf("/", (cut_index+1));
+            //console.log("cut "+depth+": "+(cut_index;
+            depth++;
+          }
+
+          if (space_index < cut_index) {
+            var nameList = item.split(" ");
+            var name = "/" + nameList[0];
+            console.log("- FILE!, File?");
+          } else {
+            var name = "/"+item.slice(0, cut_index);
+            console.log("- FOLDER: "+cut_index+", "+space_index);
+          }
+
           if (folderMap.has(name)) {
+            // Name is already in Map or...
             folderMap.set(name, folderMap.get(name) + 1);
           } else {
+            // ...Insert name into Map for first time
             folderMap.set(name, 1);
-            var item = '<li>\n  <a href="/'+name+'">'+name.replace("_", " ")+"</a>\n</li>\n";
-            folderStr = folderStr + item;
-            folderArray.push("/"+name);
+            var tag = '<li>\n  <a href="/browse'+name+'">'+name.slice(1).replace(new RegExp("_", "g"), " ")+"</a>\n</li>\n";
+            folderStr = folderStr + tag;
+            folderArray.push(name);
+            console.log("Insert in Map  :   "+name);
           }
         }
       }
-      renderPage(req, res, folderStr);
+
+
+      // PART 2/2 - FIGURE OUT WHERE YOU NEED TO GO
+
+      
+      console.log("\nPATH: "+req.path);
+      console.log("DIRPATH: "+dirPath+"\n");
+      
+
+      var isStart = false;
+      var isEqual = false;
+      var dirName = "";
+      var i = 0;
+      
+      while (!isEqual && i < folderArray.length) {
+        
+        if ((req.path !== "/") && req.path.startsWith(folderArray[i])) {
+          isStart = true;
+          dirName = folderArray[i];
+
+          if (req.path === dirName) {
+            isEqual = true;
+          }
+        }
+        console.log(folderArray[i]+" : "+req.path);
+        console.log("    start: "+isStart+"\n    equal: "+isEqual);
+        i++;
+      }
+
+
+      if (dirPath === req.path) {
+        // YOU ARE WHERE YOU'RE MENT TO BE! folderStr is Correct!!!
+        renderPage(res, res, folderStr);
+        console.log("\nRENDERED!!! SUCC!!!\n");
+
+      } else if (isEqual) {
+          renderFolders(req, res, dirName, dirDepth+1);
+
+      } else if (isStart) {
+        renderFolders(req, res, dirName, dirDepth+1);
+          
+      } else {
+          console.log("NOT FOUND!!");
+      }
     }
   );
 }
@@ -58,8 +127,7 @@ function renderFolders(req, res) {
 
 /* GET users listing. */
 router.get('/*', function(req, res) {
-  console.log(req.path);
-  renderFolders(req, res);
+  renderFolders(req, res, "/", 0);
 });
 
 module.exports = router;
