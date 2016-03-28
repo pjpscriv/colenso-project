@@ -85,9 +85,9 @@ function renderFolders(req, res, dirPath, dirDepth) {
           start = "/view";
         }
 
-        var tag = '<li>\n  '+
+        var tag = '<li class=list-group-item><span class="badge">{3}</span>\n  '+
                     '<a href="{0}{1}">'+
-                      '{2}<span class="badge">{3}</span>'+
+                      '{2}'+
                     '</a>\n'+
                   '</li>\n';
 

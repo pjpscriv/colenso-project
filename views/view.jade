@@ -13,13 +13,17 @@ block body
 
   .container
     h3 #{docTitle}
+    
 
-    .nav.nav-pills
-      li.active(role="presentation")
-        a.btn.btn-default(data-target="#Text", data-toggle="collapse") Text
-      li(role="presentation")
-        a.btn.btn-default(data-target="#XML", data-toggle="collapse") XML
+    ul.nav.nav-tabs
+      li.nav.active
+        a(href="#text", data-toggle="tab") Text
+      li.nav
+        a(href="#xml", data-toggle="tab") XML
 
-    pre 
-      p.collapse.in#Text !{content}
-      p.collapse#XML #{content}
+
+
+
+    .tab-content
+      #text.tab-pane.fade.in.active !{content}
+      #xml.tab-pane.fade #{content}
