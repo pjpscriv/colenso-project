@@ -6,6 +6,7 @@ block body
   +navbar("Database", "dropdown_menu")
     +nav_item("/") Home
     +nav_item("/browse", "active") Browse
+    +nav_item("/upload") Upload
     +nav_item("/search") Search
         
 
@@ -13,17 +14,22 @@ block body
 
   .container
     h3 #{docTitle}
-    
+
+    a.btn.btn-primary(href="PrLElizbthC-0001.xml" download) Download
+
+    form(method="get" action="/download"+docTitle)
+      button.btn.btn-primary(type="submit") Download from /download
+
 
     ul.nav.nav-tabs
-      li.nav.active
-        a(href="#text", data-toggle="tab") Text
       li.nav
+        a(href="#text", data-toggle="tab") Text
+      li.nav.active
         a(href="#xml", data-toggle="tab") XML
 
 
 
 
     .tab-content
-      #text.tab-pane.fade.in.active !{content}
-      #xml.tab-pane.fade #{content}
+      #text.tab-pane.fade !{content}
+      #xml.tab-pane.fade.in.active #{content}

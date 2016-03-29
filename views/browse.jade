@@ -6,13 +6,14 @@ block body
   +navbar("Database", "dropdown_menu")
     +nav_item("/") Home
     +nav_item("/browse", "active") Browse
+    +nav_item("/upload") Upload
     +nav_item("/search") Search
         
 
   .container-fluid
     .container
         h1=title
-        
+
       .container
         ul.list-group
           | !{folders}

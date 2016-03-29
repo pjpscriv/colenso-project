@@ -14,6 +14,28 @@ function renderPage(req, res, query, result) {
 }
 
 
+function makeResultLinks(result) {
+  var fileArray = result.split('\n');
+  var fileString = '';
+
+  for (var i = 0; i < fileArray.length; i++)
+    var item = fileArray[i];
+
+    var tag = '<li class=list-group-item>\n'+
+                '<a href="/view/{0}">'+
+                  '{0}'+
+                '</a>\n'+
+              '</li>\n';
+
+tag = tag.format(start,
+                 folder, 
+                 folder.slice(1).replace(new RegExp("_", "g"), " "),
+                 folderMap.get(folder));
+
+folderStr = folderStr + tag;
+
+}
+
 function renderTextBoxQuery(req, res) {
   var title = "Search";
   var command = "none"
@@ -31,6 +53,7 @@ function renderTextBoxQuery(req, res) {
       client.execute(command, function (error, result) {
         if(error) {
           console.error(error);
+          renderPage(req, res, command, error);
         } else {
           renderPage(req, res, command, result.result);
         }
@@ -39,16 +62,19 @@ function renderTextBoxQuery(req, res) {
     // String Thing
     } else if (req.query.string_box) {
 
-      command = xquery_string + "for $v in .//TEI[. contains text '" + req.query.string_box + "'] return db:path($v)";
+      command = xquery_string + "for $v in .//TEI[. contains text " + 
+                                 req.query.string_box + 
+                                 "] return db:path($v)";
 
       client.execute(command, function (error, result) {
         if(error) {
           console.error(error);
+          renderPage(req, res, command, error);
         } else {
           renderPage(req, res, command, result.result);
         }
       });
-      
+
     // In the BaseX Box
     } else {
       
@@ -57,6 +83,7 @@ function renderTextBoxQuery(req, res) {
       client.execute(command, function (error, result) {
         if(error) {
           console.error(error);
+          renderPage(req, res, command, error);
         } else {
           renderPage(req, res, command, result.result);
         }
