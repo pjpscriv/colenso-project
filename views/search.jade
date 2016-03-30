@@ -1,42 +1,54 @@
 extends layout
 
-//- VARIABLES: title, folders, query, result
+//- VARIABLES: title, folders, xqquery, xqresult, strquery, strresult
 
 block body
-  +navbar("Database", "dropdown_menu")
+  +navbar("Colenso Project", "dropdown_menu")
     +nav_item("/") Home
     +nav_item("/browse") Browse
-    +nav_item("/upload") Upload
     +nav_item("/search", "active") Search
+    +nav_item("/upload") Upload
+    
 
 
 
   .container
-    h3 XQuery
-    form(action="/search", method="get")
-      .input-group
-        input.form-control(type='text', placeholder='XQuery Search...', name="xquery_box")
-        span.input-group-btn
-          button.btn.btn-default(type='submit') Go!
 
-    h3 BaseX
-    form(action="/search", method="get")
-      .input-group
-        input.form-control(type='text', placeholder='Basex Command...', name="basex_box")
-        span.input-group-btn
-          button.btn.btn-default(type='submit') Go!
-
-    h3 String Literals
-    form(action="/search", method="get")
-      .input-group
-        input.form-control(type='text', placeholder='String', name="string_box")
-        span.input-group-btn
-          button.btn.btn-default(type='submit') Go!
+    ul.nav.nav-tabs
+      li.nav.active
+        a(href="#xquery", data-toggle="tab") XQuery Search
+      li.nav
+        a(href="#string", data-toggle="tab") String Search
 
 
-    h4 Command
-    pre
-      p #{query}
-    h4 Result
-    pre
-      p #{result}
+    .tab-content
+
+      #xquery.tab-pane.fade.in.active
+        h3 XQuery
+        form(action="/search", method="get")
+          .input-group
+            input.form-control(type='text', placeholder='XQuery Search...', name="xquery_box")
+            span.input-group-btn
+              button.btn.btn-default(type='submit') Search
+        h4 Command
+        pre
+          p #{xqquery}
+        h4 Result
+        !{xqresult}
+
+      #string.tab-pane.fade
+        h3 String Literals
+        form(action="/search#string", method="get")
+          .input-group
+            input.form-control(type='text', placeholder='String', name="string_box")
+            span.input-group-btn
+              button.btn.btn-default(type='submit') Search
+        h4 Command
+        pre
+          p #{strquery}
+        h4 Result
+        ul.list-group
+          | !{strresult}
+
+
+  

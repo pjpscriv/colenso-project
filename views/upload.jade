@@ -1,6 +1,6 @@
 extends layout
 
-//- VARIABLES: title, docTitle, content
+//- VARIABLES: title, message
 append styles
   link(rel='stylesheet', href='/stylesheets/upload_style.css')
 
@@ -8,45 +8,26 @@ append scripts
   script(src="/scripts/upload_js.js")
 
 block body
-  +navbar("Database", "dropdown_menu")
+  +navbar("Colenso Project", "dropdown_menu")
     +nav_item("/") Home
     +nav_item("/browse") Browse
-    +nav_item("/upload", "active") Upload
     +nav_item("/search") Search
+    +nav_item("/upload", "active") Upload
+    
         
   .container
+
     form(action="/upload", method="get")
 
+      h3 Choose File
+      input(type="file", name="fileSrc")
+
+      h3 Choose Location
       .input-group
-        span.file-input.btn.btn-primary.btn-file
-        input(type="file", name="fileSrc")
+        span#basic-addon3.input-group-addon Database Location:
+        input#basic-url.form-control(type='text', aria-describedby='basic-addon3', name="fileDest")
 
-        input(type="submit")
+      h3 Upload
+      input.btn.btn-primary(type="submit")
 
-
-
-
-      h4 Standard Button
-      span.file-input.btn.btn-primary.btn-file Browse… 
-        input(type='file', multiple='')
-
-      h4 Block-level Button
-        span.file-input.btn.btn-block.btn-primary.btn-file Browse… 
-          input(type='file', multiple='')
-
-      h4 Button Groups
-      .btn-group
-        a.btn.btn-default(href='#') Action 1
-        a.btn.btn-default(href='#') Action 2
-        span.btn.btn-primary.btn-file Browse… 
-          input(type='file', multiple='')
-
-      h4 Input Groups
-      .input-group
-        span.input-group-btn
-          span.btn.btn-primary.btn-filem Browse… 
-            input(type='file', multiple='')
-        input.form-control(type='text', readonly='')
-      span.help-block Try selecting one or more files and watch the feedback
-
-      
+      pre #{message}

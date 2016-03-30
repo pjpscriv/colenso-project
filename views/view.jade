@@ -3,33 +3,41 @@ extends layout
 //- VARIABLES: title, docTitle, content
 
 block body
-  +navbar("Database", "dropdown_menu")
+  +navbar("Colenso Project", "dropdown_menu")
     +nav_item("/") Home
     +nav_item("/browse", "active") Browse
-    +nav_item("/upload") Upload
     +nav_item("/search") Search
+    +nav_item("/upload") Upload
         
 
   
 
   .container
-    h3 #{docTitle}
+    h3.col-md-8 #{docTitle}
+    a.col-md-offset-3.btn.btn-primary(href="/download"+docTitle) Download
+    
 
-    a.btn.btn-primary(href="PrLElizbthC-0001.xml" download) Download
-
-    form(method="get" action="/download"+docTitle)
-      button.btn.btn-primary(type="submit") Download from /download
-
-
+  .container
     ul.nav.nav-tabs
-      li.nav
-        a(href="#text", data-toggle="tab") Text
       li.nav.active
+        a(href="#text", data-toggle="tab") Text
+      li.nav
         a(href="#xml", data-toggle="tab") XML
-
-
+      li.nav
+        a(href="#edit", data-toggle="tab") Edit
 
 
     .tab-content
-      #text.tab-pane.fade !{content}
-      #xml.tab-pane.fade.in.active #{content}
+
+      #text.tab-pane.fade.in.active !{content}
+
+      #xml.tab-pane.fade 
+        pre #{content}
+
+      #edit.tab-pane.fade
+        .form-group
+          textarea.form-control(rows="30")
+            !{content}
+        a.btn.btn-primary(href="#") Save
+
+

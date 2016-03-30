@@ -1,6 +1,26 @@
-.sidebar {
-  background-color: #f5f5f5;
+body {
+  /*background-color: #F1F5F2;
+
+/*
+  #1F422E dark green
+  #447243 light green
+  #87784A dark tan
+  #DBC192 tan
+  #F1F5F2 white
+*/
+
 }
+
+textarea {
+  resize: none;
+}
+
+
+.nav-bar {
+  background-color: #447243;
+}
+
+
 .container {
   /*background-color: antiquewhite;*/
   /*padding: 1%;*/
