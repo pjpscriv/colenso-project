@@ -19,8 +19,8 @@ function addToDatabase(req, res) {
   if (req.query.fileSrc) {
 
     var input = req.query.fileSrc;
-    //var path = req.query.fileDest;
-    var path = /added/;
+    var path = req.query.fileDest;
+    //var path = /added/;
 
     var query = "ADD TO "+path+" "+input;
 
@@ -29,7 +29,9 @@ function addToDatabase(req, res) {
         console.error(error);
         renderPage(req, res, error);
       } else {
-        renderPage(req, res, result.result);
+        console.log("SUCC! RES: ", result.result)
+        var message = "Success!\nFile: '" + input + "'' added to database at location: '" + path +"'";
+        renderPage(req, res, message);
       }
     });
   } else {

@@ -51,36 +51,28 @@ function makeResultLinks(result) {
 function makeXqueryResults(result) {
 
   var resultArray = result.split('\n');
-  
-  if (resultArray.length > 2) {
-    var currentSrcFile = resultArray[0];
-    var resultsString = '<li class=list-group-item>\n'+
-                        '  <a href="/view/{0}">{0}</a>\n'.format(currentSrcFile)+
-                        '</li>\n';
-    resultsString += '<p>' + resultArray[1].replace(new RegExp("<","g")," ").replace(new RegExp(">","g")," ") + '</p>' + "\n";
-  }
-  //console.log(resultsString);
-  var srcFile = '';
-  for (var i = 2; i < resultArray.length; i += 2) {
+  var fileMap = new Map();
+  var resultsString = '';
 
-    srcFile = resultArray[i];
-    var line = resultArray[i+1];
-
-    console.log('cuur: '+currentSrcFile, 'New: '+srcFile);
-    if (srcFile === currentSrcFile) {
-      resultsString += '<p>' + line.replace(new RegExp("<","g")," ").replace(new RegExp(">","g")," ") + '</p>' + "\n";
-      
+  for (var i = 0; i < resultArray.length; i++) {
+    var file = resultArray[i];
+    if (!fileMap.has(file)) {
+      // Insert into Map
+      fileMap.set(file, 1);
     } else {
-      currentSrcFile = srcFile;
-      var srcTag = '<li class=list-group-item>\n'+
-                     '<a href="/view/{0}">{0}</a>\n'.format(srcFile)+
-                   '</li>\n';
-      resultsString += srcTag;
-      resultsString += '<p>' + line.replace(new RegExp("<","g")," ").replace(new RegExp(">","g")," ") + '</p>' + "\n";
+      // Increment Count
+      fileMap.set(file, fileMap.get(file) + 1);
     }
   }
-  resultsString += "</p>";
-  //console.log(resultsString);
+
+  for (var file of fileMap.keys()) {
+    tag = '<li class=list-group-item><span class="badge">{1}</span>\n'+
+          '  <a href="/view/{0}">{0}</a>\n'+
+          '</li>\n';
+    tag = tag.format(file, fileMap.get(file))
+
+    resultsString += tag;
+  }
   return resultsString;
 }
 
@@ -94,29 +86,31 @@ function renderTextBoxQuery(req, res) {
 
   if (req.query.xquery_box || req.query.string_box) {
     
-    // In the XQuery Box
+    // XQuery Box Search
     if (req.query.xquery_box) {
-      command = xquery_string + "for $x in " + req.query.xquery_box + " return (db:path($x), $x)";
+      command = xquery_string + "for $x in " + req.query.xquery_box + 
+      " return db:path($x)";
 
       client.execute(command, function (error, result) {
         if(error) {
           console.error(error);
           renderPage(req, res, command, error, "none", "none");
         } else {
-          resultString = makeXqueryResults(result.result);
+          var resultString = makeXqueryResults(result.result);
           renderPage(req, res, command, resultString, "none", "none");
         }
       });
 
-    // String Box
+    // String Box Search
     } else {
-      command = xquery_string + "\nfor $v in .//TEI[. contains text ('" + 
+      command = xquery_string + "\nfor $v in .//TEI[. contains text (" + 
                                  req.query.string_box + 
-                                 "') using wildcards] \nreturn db:path($v)";
+                                 ") using wildcards] \nreturn db:path($v)";
 
-      command = command.replace(new RegExp(" AND ", "g"), "' ftand '");
-      command = command.replace(new RegExp(" OR ", "g"), "' ftor '");
-      command = command.replace(new RegExp(" NOT ", "g"), "' ftnot '");
+      command = command.replace(new RegExp("AND", "g"), "ftand");
+      command = command.replace(new RegExp("OR", "g"), "ftor");
+      command = command.replace(new RegExp("NOT", "g"), "ftnot");
+
 
       client.execute(command, function (error, result) {
         if(error) {
@@ -129,7 +123,7 @@ function renderTextBoxQuery(req, res) {
       });
     } 
 
-  // No Text Box Query
+  // No Search Query
   } else {
     renderPage(req, res, command, result);
   }
