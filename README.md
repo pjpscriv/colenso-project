@@ -5,7 +5,7 @@ A website interface to view the letters and writings of the New Zealand missiona
 ## Requirements
 Requires the `node` and `npm` packages.
 
-Also requires the [BaseX](http://basex.org/products/download/all-downloads/) XML database which should be downloaded [here](http://files.basex.org/releases/8.4.1/BaseX841.zip) and extracted to a folder named `basex` in the same directory you clone the repository to.
+Also requires the [BaseX](http://basex.org/products/download/all-downloads/) XML database which should be downloaded [here](http://files.basex.org/releases/8.4.1/BaseX841.zip) and extracted to a folder named `basex` in the parent directory.
 
 ## Installation
 First create a parent directory.
@@ -17,14 +17,14 @@ Then clone this repository.
 ```
 git clone https://github.com/JustaBitDope/colenso-project.git
 ```
-Then install the npm dependencies
+Install the npm dependencies.
 ```
 cd colenso-project
 npm install
 ```
-Extract the the letters database to the parent directory
+Extract the the letters database to the parent directory.
 ```
-unzip Colendo_TEIs.zip -d ../Colenso
+unzip Colenso_TEIs.zip -d ../Colenso
 ```
 
 ## Running
@@ -33,4 +33,4 @@ Before running you should have three folders in the parent directory:
  - `basex`
  - `Colenso`
 
-Run the server with the command `./server` and in a separate terminal run th client with `./client`. Then go to `localhost:3000` in your web browser.
+Run the server with the command `./server` and in a separate terminal run the client with `./client`. The website is then accessible from `localhost:3000` in your web browser.
