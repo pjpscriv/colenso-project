@@ -15,6 +15,10 @@ Then install the npm dependencies
 cd colenso-project
 npm install
 ```
+Extract the the letters database to the parent directory
+```
+unzip Colendo_TEIs.zip -d ../Colenso
+```
 
 ## Running
-Run the website with the command `bin/www` and go to `localhost:3000` in your web browser.
+Run the server with the command `./server` and in a separate terminal run th client with `./client`. Then go to `localhost:3000` in your web browser.
