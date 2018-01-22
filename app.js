@@ -1,14 +1,14 @@
 var express = require('express');           // App framework
-var path = require('path');                 // Node thing for dealing with paths. E.g. adding in all the directories node uses
+var path    = require('path');              // Node thing for dealing with paths. E.g. adding in all the directories node uses
 var favicon = require('serve-favicon');     // For fav-icon
-var logger = require('morgan');             // A logging software. Useful for when dev-ing (if I knew how to use it)
+var logger  = require('morgan');            // A logging software. Useful for when dev-ing (if I knew how to use it)
 var cookieParser = require('cookie-parser');// For dealing with cookies
-var bodyParser = require('body-parser');
+var bodyParser   = require('body-parser');
 
 var routes = require('./routes/index');
 var browse = require('./routes/browse');
 var search = require('./routes/search');
-var view = require('./routes/view');
+var view   = require('./routes/view');
 var upload = require('./routes/upload');
 
 var app = express();
