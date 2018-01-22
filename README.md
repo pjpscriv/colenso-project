@@ -28,9 +28,13 @@ unzip Colenso_TEIs.zip -d ../Colenso
 ```
 
 ## Running
-Before running you should have three folders in the parent directory: 
- - `colenso-project`
- - `basex`
- - `Colenso`
+Before running your directory structure should look like this:
+(result of `tree -L 1 colenso\` command)
+```
+colenso/
+├── basex
+├── Colenso
+└── colenso-project
+```
 
 Run the server with the command `./server` and in a separate terminal run the client with `./client`. The website is then accessible from `localhost:3000` in your web browser.
