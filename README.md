@@ -3,9 +3,9 @@
 A website interface to view the letters and writings of the New Zealand missionary [William Colenso](https://en.wikipedia.org/wiki/William_Colenso) (1811-1899).
 
 ## Requirements
-Requires the Node 6.
+Requires the Node v6.
 
-Also requires the [BaseX](http://basex.org/products/download/all-downloads/) XML database. Installatino instructions for this are included below.
+Also requires the [BaseX](http://basex.org/products/download/all-downloads/) XML database. Installation instructions for this are included below.
 
 ## Installation
 First create a parent directory.
